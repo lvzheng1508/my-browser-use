@@ -661,6 +661,18 @@ class BrowserProfile(BrowserConnectArgs, BrowserLaunchPersistentContextArgs, Bro
 	)
 	interaction_highlight_duration: float = Field(default=1.0, description='Duration in seconds to show interaction highlights.')
 
+	# --- Screenshot pipeline ---
+	disable_screenshot_pipeline: bool = Field(
+		default=True,
+		description=(
+			'Disable screenshot capture in browser state flow. '
+			'When True (default), screenshots are skipped — ideal for login-state page tasks '
+			'on complex SPAs where captureScreenshot can block DOM extraction. '
+			'Set to False to restore legacy screenshot behavior for vision-based agents. '
+			'Log marker "screenshot_pipeline=disabled" appears in debug logs when active.'
+		),
+	)
+
 	# --- Downloads ---
 	auto_download_pdfs: bool = Field(default=True, description='Automatically download PDFs when navigating to PDF viewer pages.')
 

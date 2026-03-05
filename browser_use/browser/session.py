@@ -1479,10 +1479,17 @@ class BrowserSession(BaseModel):
 	@observe_debug(ignore_input=True, ignore_output=True, name='get_browser_state_summary')
 	async def get_browser_state_summary(
 		self,
-		include_screenshot: bool = True,
+		include_screenshot: bool | None = None,
 		cached: bool = False,
 		include_recent_events: bool = False,
 	) -> BrowserStateSummary:
+		# Determine if we should include a screenshot
+		if include_screenshot is None:
+			include_screenshot = not self.browser_profile.disable_screenshot_pipeline
+		
+		if not include_screenshot:
+			self.logger.debug('screenshot_pipeline=disabled')
+
 		if cached and self._cached_browser_state_summary is not None and self._cached_browser_state_summary.dom_state:
 			# Don't use cached state if it has 0 interactive elements
 			selector_map = self._cached_browser_state_summary.dom_state.selector_map
