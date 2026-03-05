@@ -1486,7 +1486,7 @@ class BrowserSession(BaseModel):
 		# Determine if we should include a screenshot
 		if include_screenshot is None:
 			include_screenshot = not self.browser_profile.disable_screenshot_pipeline
-		
+
 		if not include_screenshot:
 			self.logger.debug('screenshot_pipeline=disabled')
 

@@ -11,7 +11,6 @@ import pytest
 from browser_use.browser.events import BrowserStateRequestEvent
 from browser_use.browser.profile import BrowserProfile
 
-
 # =========================================================================
 # Task 1: Default disable_screenshot_pipeline=True
 # =========================================================================
@@ -20,9 +19,7 @@ from browser_use.browser.profile import BrowserProfile
 def test_browser_profile_has_disable_screenshot_pipeline_field():
 	"""BrowserProfile should expose disable_screenshot_pipeline with default True."""
 	profile = BrowserProfile()
-	assert hasattr(profile, 'disable_screenshot_pipeline'), (
-		'BrowserProfile must have a disable_screenshot_pipeline field'
-	)
+	assert hasattr(profile, 'disable_screenshot_pipeline'), 'BrowserProfile must have a disable_screenshot_pipeline field'
 	assert profile.disable_screenshot_pipeline is True, (
 		'disable_screenshot_pipeline should default to True (screenshots disabled by default)'
 	)
@@ -49,14 +46,12 @@ async def test_default_disable_screenshot_pipeline():
 		if isinstance(event, BrowserStateRequestEvent):
 			dispatched_events.append(event)
 		mock_event = AsyncMock()
-		mock_event.event_result = AsyncMock(
-			return_value=MagicMock(dom_state=MagicMock(selector_map={1: 'elem'}))
-		)
+		mock_event.event_result = AsyncMock(return_value=MagicMock(dom_state=MagicMock(selector_map={1: 'elem'})))
 		return mock_event
 
 	# Patch cached state to force a fresh dispatch
 	session._cached_browser_state_summary = None
-	
+
 	mock_result = MagicMock()
 	mock_result.dom_state = MagicMock(selector_map={1: 'elem'})
 
@@ -96,13 +91,11 @@ async def test_enable_screenshot_pipeline_explicitly():
 		if isinstance(event, BrowserStateRequestEvent):
 			dispatched_events.append(event)
 		mock_event = AsyncMock()
-		mock_event.event_result = AsyncMock(
-			return_value=MagicMock(dom_state=MagicMock(selector_map={1: 'elem'}))
-		)
+		mock_event.event_result = AsyncMock(return_value=MagicMock(dom_state=MagicMock(selector_map={1: 'elem'})))
 		return mock_event
 
 	session._cached_browser_state_summary = None
-	
+
 	with patch.object(session.event_bus, 'dispatch', side_effect=capture_dispatch):
 		await session.get_browser_state_summary()
 
@@ -121,7 +114,6 @@ async def test_enable_screenshot_pipeline_explicitly():
 @pytest.mark.asyncio
 async def test_screenshot_pipeline_disabled_log_marker():
 	"""When pipeline is disabled, debug log should contain 'screenshot_pipeline=disabled'."""
-	import logging
 
 	from browser_use.browser.session import BrowserSession
 
